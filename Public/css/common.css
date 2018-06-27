@@ -1,0 +1,156 @@
+html, body, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+i {
+    font-style: normal
+}
+
+.clearfix {
+    clear: both;
+}
+
+html {
+    font-size: 14px;
+    font-family: "Microsoft YaHei";
+    overflow-x: hidden;
+}
+
+body {
+    background: url("/Public/image/m_bj.jpg") no-repeat;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+.top-head {
+    margin-top: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.top-head img {
+    width: 18rem;
+}
+
+.back {
+    width: 1rem;
+    height: 2rem;
+    position: absolute;
+    top: -1rem;
+    left: 1rem;
+    background: url("/Public/image/back.png") center center no-repeat;
+    background-size: 1rem;
+}
+
+.bet-link {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.bet-link a {
+    display: inline-block;
+    width: 6rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
+    text-align: center;
+    color: black;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: url("/Public/image/topbar_right_bg.png") center center no-repeat;
+    background-size: 5rem;
+}
+
+.bet-link .top-champion-img {
+    display: none;
+}
+
+a:link ,a:hover,a:active,a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.index-box {
+    padding: 0 15px 30px 15px;
+}
+
+/*微信端打开*/
+.weixin {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: black;
+    opacity: 0.8;
+    display: none;
+}
+
+.weixin img {
+    width: 20rem;
+    margin-top: 5rem;
+}
+
+.weixin p {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/*语言选择*/
+.lang {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.lang span:hover {
+    cursor: pointer;
+}
+
+/*主 客*/
+.home, .away {
+    color: black;
+    font-size: 0.5rem;
+    font-weight: 600;
+    position: absolute;
+}
+
+.home {
+    left: 0.1rem;
+    top: 0.1rem;
+}
+
+.away {
+    right: 0.1rem;
+    bottom: 0.1rem;
+}
+
+.alert-msg {
+    padding-left: 6rem;
+    margin-top: 14%;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 320px) {
+    /*主 客*/
+    .home, .away {
+        color: black;
+        font-size: 0.5rem;
+        font-weight: 600;
+        position: absolute;
+    }
+
+    .home {
+        left: 0.1rem;
+        top: 0.3rem;
+    }
+
+    .away {
+        right: 0.1rem;
+        bottom: 0.3rem;
+    }
+}

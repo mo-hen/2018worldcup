@@ -1,0 +1,96 @@
+html {
+    font-family: "Microsoft YaHei";
+}
+
+body {
+    overflow-x: hidden;
+    background: url("/Public/image/bg_long.jpg") no-repeat;
+    background-size: cover;
+    padding-bottom: 50px;
+}
+
+i {
+    font-style: normal
+}
+
+/*头部导航*/
+.top-img {
+    margin: 50px 0;
+    padding: 0;
+    text-align: center;
+    position: relative;
+}
+
+.top-left-img {
+    position: absolute;
+    width: 151px;
+    height: 164px;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    background: url("/Public/image/world.png") center center no-repeat;
+}
+
+.top-middle-img {
+    width: 400px;
+}
+
+.top-right-img {
+    position: absolute;
+    width: 124px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    bottom: 0;
+    right: 130px;
+    cursor: pointer;
+    background: url("/Public/image/topbar_right_bg.png") center center no-repeat;
+}
+
+.top-champion-img {
+    display: none;
+    position: absolute;
+    width: 124px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    bottom: 0;
+    right: 0;
+    text-decoration: none;
+    background: url("/Public/image/topbar_right_bg.png") center center no-repeat;
+}
+
+.top-champion-img:link ,.top-champion-img:hover,.top-champion-img:active,.top-champion-img:visited {
+    color: black;
+    text-decoration: none;
+}
+
+/*主体*/
+.index-box {
+    min-height: 400px;
+}
+
+/*语言选择*/
+.lang {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.lang span:hover {
+    cursor: pointer;
+}
+
+.alert-msg {
+    padding-left: 165px;
+    margin-top: 14%;
+    font-size: 18px;
+}

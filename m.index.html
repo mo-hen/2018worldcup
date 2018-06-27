@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title class="trn">2018 World Cup Predictions</title>
+    <link href="./asset/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./Public/css/common.css?v=1.0.1">
+    <style type="text/css">
+        .star-time {
+            color: #FFFFFF;
+            height: 1.8rem;
+            font-size: 1rem;
+            line-height: 2.2rem;
+            padding-left: 1.8rem;
+            background: url("./Public/image/clock.png") center left no-repeat;
+            background-size: 1.2rem;
+        }
+
+        .game-item {
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .country-item-box {
+            position: relative;
+            width: 100%;
+            height: 4rem;
+            margin-top: 0.2rem;
+            cursor: pointer;
+            background: url("Public/image/country_box_m.png") center center no-repeat;
+            background-size: 100%;
+        }
+
+        .country-item-box span {
+            font-size: 0.8rem;
+        }
+
+        .country-item-left {
+            position: absolute;
+            left: 2rem;
+            top: 0.6rem;
+            font-weight: bold;
+            color: #008B22;
+        }
+
+        .country-logo {
+            width: 2rem;
+            vertical-align: middle;
+        }
+
+        .country-item-right {
+            position: absolute;
+            right: 2rem;
+            bottom: 0.6rem;
+        }
+
+        .country-item-left span {
+            display: inline-block;
+            margin-left: 0.2rem;
+            vertical-align: middle;
+        }
+
+        .country-item-right span {
+            font-weight: bold;
+            margin-right: 0.2rem;
+            color: #FFFFFF;
+        }
+
+        .Bonus-pools {
+            color: #FFFFFF;
+            height: 2rem;
+            font-size: 1rem;
+            line-height: 2rem;
+            padding-left: 2rem;
+            margin-top: 0.51rem;
+            background: url("./Public/image/gold_ttt.png") center left no-repeat;
+            background-size: 1.5rem;
+        }
+
+        .Bonus-pools span {
+            font-weight: bold;
+            color: #FFE401;
+        }
+
+        .hr {
+            margin-top: 1rem;
+            border-bottom: dashed 1px #F2F2F2;
+        }
+
+        /*弹窗*/
+
+        #tipModal .close {
+            width: 3rem;
+            height: 2.8rem;
+            margin-top: 0;
+            opacity: 1;
+            background: url("./Public/image/close.png");
+            background-size: 3rem;
+        }
+
+        #tipModal .modal-dialog {
+            width: 24rem;
+            margin: 5rem auto;
+        }
+
+        .modal-header {
+            padding: 0 0.7rem;
+            border-bottom: none;
+        }
+
+        #tipModal .modal-body {
+            height: 10rem;
+            background: url("./Public/image/alert_logo.png") 10% center no-repeat;
+            background-size: 5rem;
+        }
+
+        #tipModal .modal-content {
+            border-radius: 0.8rem;
+            margin-top: 50%;
+        }
+
+        .modal-body img {
+            width: 20rem;
+        }
+
+    </style>
+    <script type="text/html" id="dataTpl">
+        <% for(var i = 0 ; i < data.length ; i++){%>
+        <div class="game-item" data-num="<%= data[i].id%>" data-max="<%= data[i].maxAmount%>"
+             data-amount="<%= data[i].cathecticAmount %>">
+            <h4 class="star-time"><%= formatDate(data[i].gameStartTime) %></h4>
+            <div class="country-item-box">
+                <i class="trn home">Home</i>
+                <div class="country-item-left">
+                    <img src="<%= data[i].homecourtPath %>" alt="" class="country-logo">
+                    <span><%= data[i].homecourtName%></span>
+                </div>
+                <div class="country-item-right">
+                    <span><%= data[i].awaycourtName%></span>
+                    <img src="<%= data[i].awaycourtPath %>" alt="" class="country-logo">
+                </div>
+                <i class="trn away">Away</i>
+            </div>
+            <div class="clearfix"></div>
+            <div class="Bonus-pools">
+                <i class="trn">Bonus pool</i>
+                <span><%= data[i].cathecticAmount.toFixed(2)%> TTT</span>
+            </div>
+        </div>
+
+        <% if(i < (data.length - 1)){%>
+        <div class="clearfix"></div>
+        <div class="hr"></div>
+        <%}%>
+
+        <%}%>
+    </script>
+</head>
+<body>
+<div class="top-head">
+    <img class="top-middle-img" src="Public/image/title.png">
+    <div class="bet-link">
+        <a href="./m.betHistory.html" class="top-right-img trn">My bets</a>
+        <a href="./m.champion.html" class="top-champion-img trn">Champion</a>
+    </div>
+</div>
+<div class="index-box">
+    <!--每日赛事-->
+</div>
+<!--language-->
+<div class="clearfix"></div>
+<div class="lang">
+    <span class="switchZh">中文</span> | <span class="switchEn">English</span>
+</div>
+<!--停止投注弹窗-->
+<div class="bet-end-modal">
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="tipModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&nbsp;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="alert-msg trn">There are no tickets left</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--微信端打开-->
+<div class="weixin">
+    <img src="./Public/image/weixin.png" alt="">
+    <p class="trn">Open in the browser</p>
+</div>
+
+<script src="./asset/jquery/jquery.min.js"></script>
+<script src="./asset/jquery/jquery.translate.js"></script>
+<script src="./asset/jquery/jquery.cookie.js"></script>
+<script src="asset/artTemplate/template-native-debug.js"></script>
+<script src="./asset/bootstrap/bootstrap.min.js"></script>
+<script src="./Public/js/config.js"></script>
+<script src="./Public/js/common.js?v=1.0.0"></script>
+<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script type="text/javascript">
+    $(function () {
+        //微信中打开
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            $('.weixin').show()
+        }
+
+        //判断平台
+        if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            window.location.href = './p.index.html';
+        }
+
+        //猜冠军
+        $.ajax({
+            type: "get",
+            url: requestUrl + '/v1/fifa/getwinning-switch',
+            async: true,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+                if (data.code == '0') {
+                    $('.top-champion-img').css('display','inline-block')
+                }else{
+                    $('.top-champion-img').hide()
+                }
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+
+        //查看投注列表
+        $('.index-box').on('click', '.country-item-box', function (e) {
+            var maxAmount = $(e.target).closest('.game-item').data('max');
+            var cathecticAmount = $(e.target).closest('.game-item').data('amount');
+            if (cathecticAmount >= maxAmount) {
+                $('#tipModal').modal('show');
+                return false;
+            }
+            var id = $(e.target).closest('.game-item').data('num');
+            window.location.href = './m.betChoose.html?id=' + id;
+        })
+
+        //时间戳格式化
+        template.helper('formatDate', function (num) {
+            return timestampToTime(num);
+        });
+
+        function getMatchlist() {
+            $.ajax({
+                type: "get",
+                url: requestUrl + '/v1/fifa/get-matchlist',
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.code == '0') {
+                        if (data.data.length > 0) {
+                            var html = template('dataTpl', {data: data.data});
+                            $('.index-box').html(html);
+                        }
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+        }
+
+        getMatchlist()
+
+        //选择语言
+        var translator;       //设置默认语言
+
+
+        if (!$.cookie('locale')) {
+            var lang = checkIp();
+            if (lang == 'zh') {
+                switchLanguage('zh_CN');
+                translator = $('html').translate({lang: "zh", t: dict});
+                $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+            } else {
+                switchLanguage('en_US');
+                translator = $('html').translate({lang: "en", t: dict});
+                $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+            }
+
+        } else {
+
+            if ($.cookie('locale') == 'en_US') {
+                switchLanguage('en_US');
+                translator = $('html').translate({lang: "en", t: dict});
+                $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+            } else {
+                switchLanguage('zh_CN');
+                translator = $('html').translate({lang: "zh", t: dict});
+                $('.top-middle-img').attr('src', 'Public/image/title.png');
+            }
+        }
+
+        //切换语言
+        $('.switchZh').on('click', function (e) {
+
+            $.cookie('locale', 'zh_CN', {path: '/', expire: 30});
+
+            switchLanguage('zh_CN');
+            getMatchlist()
+            translator.lang("zh");
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+        })
+        $('.switchEn').on('click', function (e) {
+
+            $.cookie('locale', 'en_US', {path: '/', expire: 30});
+
+            switchLanguage('en_US');
+            getMatchlist()
+            translator.lang("en");
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        })
+
+    })
+</script>
+
+</body>
+</html>

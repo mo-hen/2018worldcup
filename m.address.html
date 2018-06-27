@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title class="trn">2018 World Cup Predictions</title>
+    <link href="./asset/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./Public/css/common.css?v=1.0.0">
+    <style type="text/css">
+        .address {
+            width: 25rem;
+            height: 22rem;
+            margin: 3rem auto;
+            padding-top: 3.2rem;
+            position: relative;
+            background: url("./Public/image/m_address_border.png") center center no-repeat;
+            background-size: 25rem;
+        }
+
+        .addr-input {
+            display: block;
+            width: 22rem;
+            height: 3.8rem;
+            margin: 0 auto;
+            border: none;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            color: white;
+            outline: none;
+            font-size: 1rem;
+            background: url("./Public/image/m_addr_input.png") center center no-repeat;
+            background-size: 21.5rem;
+        }
+
+        ::-webkit-input-placeholder {
+            color: #dcdfe6;
+        }
+
+        :-moz-placeholder {
+            color: #dcdfe6;
+        }
+
+        ::-moz-placeholder {
+            color: #dcdfe6;
+        }
+
+        :-ms-input-placeholder {
+            color: #dcdfe6;
+        }
+
+        .tips {
+            width: 21.5rem;
+            color: #F3D802;
+            margin: 0.5rem auto;
+            font-size: 0.8rem;
+        }
+
+        .addr-btn {
+            width: 22rem;
+            height: 3.8rem;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 3.8rem;
+            margin: 0.5rem auto;
+            background: url("./Public/image/m_addr_btn.png") center center no-repeat;
+            background-size: 21.5rem;
+        }
+
+        .download {
+            width: 22rem;
+            margin: 0 auto;
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .download a {
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+        .address .err-msg {
+            width: 21.5rem;
+            margin: 0 auto;
+            font-size: 0.8rem;
+            color: #FF7776;
+            opacity: 0;
+        }
+
+        .address input.err {
+            padding-left: 1rem;
+            background: url("./Public/image/m_err_input.png") center center no-repeat;
+            background-size: 21.5rem;
+        }
+
+        .foot {
+            width: 100%;
+            margin-top: -5rem;
+            height: 20rem;
+            background: url("./Public/image/m_addr_foot.png") center center no-repeat;
+            background-size: 25rem;
+        }
+
+        /*模态窗*/
+        .pay {
+            width: 24rem;
+        }
+
+        #myModal .close, #tipModal .close {
+            width: 3rem;
+            height: 2.8rem;
+            margin-top: 0;
+            opacity: 1;
+            background: url("./Public/image/close.png");
+            background-size: 3rem;
+            position: absolute;
+            top: 0;
+            right: 0.5rem;
+        }
+
+        .modal-title {
+            text-align: center;
+            font-weight: 700;
+            padding-top: 1.5rem;
+        }
+
+        #myModal .modal-dialog, #tipModal .modal-dialog {
+            width: 24rem;
+            margin: 5rem auto;
+        }
+
+        #myModal .modal-content {
+            border-radius: 0.8rem;
+        }
+
+        .modal-header {
+            padding: 0 0.7rem;
+            border-bottom: none;
+            position: relative;
+        }
+
+        #myModal h2 {
+            margin: 0 0 1rem 0;
+            text-align: center;
+        }
+
+        #qrcode {
+            width: 16rem;
+            height: 16rem;
+            margin: 0 auto;
+            border: solid 0.1rem #F3D802;
+            border-radius: 0.2rem;
+            padding: 0.2rem;
+            text-align: center;
+        }
+
+        #qrcode canvas {
+            width: 15rem;
+            height: 15rem;
+        }
+
+        .app-btn {
+            display: block;
+            width: 16rem;
+            height: 2.5rem;
+            color: #000000;
+            font-weight: 500;
+            text-align: center;
+            line-height: 2.5rem;
+            border-radius: 2rem;
+            margin: 0.5rem auto;
+            background-color: #F3D802;
+        }
+
+        .input-group {
+            margin-top: 0.5rem;
+        }
+
+        #copy-text {
+            height: 2rem;
+            font-size: 0.85rem;
+            padding: 0.1rem 0.4rem;
+            background-color: #fff;
+        }
+
+        .copy-btn {
+            height: 2rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            background: url("./Public/image/clippy.svg") center center no-repeat;
+            background-size: 1rem;
+        }
+
+        .copy-tip {
+            position: absolute;
+            top: -0.2rem;
+            right: 35%;
+            background-color: #333333;
+            opacity: 0.8;
+            z-index: 999;
+            border-radius: 0.2rem;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            display: none;
+        }
+
+        .app-btn:active, .app-btn:hover, .app-btn:link, .app-btn:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        .s-tips {
+            width: 19rem;
+            margin: 0 auto;
+            font-size: 0.8rem;
+        }
+
+        .s-tips h5 {
+            margin-bottom: 0.2rem;
+            text-indent: -0.2rem;
+        }
+
+        .s-tips p {
+            text-indent: -1.2rem;
+            padding-left: 0.8rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .warning {
+            text-align: center;
+            margin: 0.5rem 0 0 0;
+            font-size: 0.8rem;
+            color: red;
+        }
+
+        #tipModal .modal-body {
+            height: 10rem;
+            background: url("./Public/image/alert_logo.png") 10% center no-repeat;
+            background-size: 5rem;
+        }
+
+        #tipModal .modal-content {
+            margin-top: 50%;
+        }
+
+        .modal-body img {
+            width: 20rem;
+        }
+
+        .pay-close {
+            outline: none;
+        }
+
+        @media screen and (max-width: 320px) {
+            .address {
+                width: 21rem;
+                height: 20rem;
+                margin: 1rem auto;
+                padding-top: 3.2rem;
+                position: relative;
+                background: url("./Public/image/m_address_border.png") center center no-repeat;
+                background-size: 21rem;
+            }
+
+            .addr-input {
+                display: block;
+                width: 19rem;
+                height: 3.2rem;
+                margin: 0 auto;
+                border: none;
+                padding-left: 0.8rem;
+                color: white;
+                outline: none;
+                font-size: 0.8rem;
+                background: url("./Public/image/m_addr_input.png") center center no-repeat;
+                background-size: 19rem;
+            }
+
+            .address input.err {
+                padding-left: 0.8rem;
+                background: url("./Public/image/m_err_input.png") center center no-repeat;
+                background-size: 19rem;
+            }
+
+            .tips {
+                width: 19rem;
+                color: #F3D802;
+                margin: 0.5rem auto;
+                font-size: 0.7rem;
+            }
+
+            .address .err-msg {
+                width: 19rem;
+                margin: 0 auto;
+                margin-top: 0.5rem;
+                font-size: 0.7rem;
+                color: #FF7776;
+                opacity: 0;
+            }
+
+            .addr-btn {
+                width: 19rem;
+                height: 3.2rem;
+                margin: 0.5rem auto;
+                background: url("./Public/image/m_addr_btn.png") center center no-repeat;
+                background-size: 19rem;
+            }
+
+            .download {
+                width: 19rem;
+                margin: 0 auto;
+                margin-top: 0.6rem;
+                font-size: 0.8rem;
+                color: #FFFFFF;
+                text-align: center;
+            }
+
+            .foot {
+                width: 100%;
+                margin-top: -2rem;
+                height: 15rem;
+                background: url("./Public/image/m_addr_foot.png") center center no-repeat;
+                background-size: 21rem;
+            }
+
+            #myModal .modal-dialog, #tipModal .modal-dialog {
+                width: 21rem;
+                margin: 5rem auto;
+            }
+
+            #copy-text {
+                height: 2rem;
+                font-size: 0.7rem;
+                padding: 0.1rem 0.3rem;
+                background-color: #fff;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-head">
+    <img class="top-middle-img" src="Public/image/title.png">
+    <a class="back" href="javascript:void(0)" onclick="window.history.back(-1);"></a>
+</div>
+<div class="address">
+    <input type="text" class="addr-input">
+    <div class="tips trn">Please fill in your wallet address</div>
+    <div class="err-msg trn">The address you input is invalid</div>
+    <div class="addr-btn trn">ok</div>
+    <div class="download">
+        <a href="https://trustnote.org/application.html" TARGET="_blank" class="trn">Get Your TrustNote Wallet</a>
+    </div>
+</div>
+<div class="foot"></div>
+<!--语言-->
+<div class="clearfix"></div>
+<div class="lang">
+    <span class="switchZh">中文</span> | <span class="switchEn">English</span>
+</div>
+<!--支付-->
+<div class="pay">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close pay-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&nbsp;</span>
+                    </button>
+                    <h4 class="modal-title"><i class="trn">Pay</i><span id="pay-count"></span></h4>
+                    <p class="warning trn">Only TTT is accepted</p>
+                </div>
+                <div class="modal-body">
+                    <div id="qrcode"></div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly id="copy-text">
+                        <span class="input-group-btn">
+                        <a class="btn btn-default copy-btn" type="button" data-clipboard-target="#copy-text">&nbsp;</a>
+                        </span>
+                        <span class="copy-tip trn">Copied</span>
+                    </div>
+                    <a class="app-btn trn" target="_blank">Open TTT wallet to pay</a>
+                    <div class="s-tips">
+                        <h5 class="trn">Tips</h5>
+                        <p class="trn">Supports TTT wallet only</p>
+                        <p class="trn" style="color: red;">You must pay exactly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--停止投注弹窗-->
+<div class="bet-end-modal">
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="tipModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close back-index-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&nbsp;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="alert-msg trn">The vote is over</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--微信端打开-->
+<div class="weixin">
+    <img src="./Public/image/weixin.png" alt="">
+    <p class="trn">Open in the browser</p>
+</div>
+
+<script src="./asset/jquery/jquery.min.js"></script>
+<script src="./asset/jquery/jquery.translate.js"></script>
+<script src="./asset/jquery/jquery.qrcode.min.js"></script>
+<script src="./asset/bootstrap/bootstrap.min.js"></script>
+<script src="./asset/jquery/jquery.cookie.js"></script>
+<script src="./asset/clipboard/clipboard.min.js"></script>
+<script src="./Public/js/config.js"></script>
+<script src="./Public/js/common.js?v=1.0.0"></script>
+<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script type="text/javascript">
+    $(function () {
+        //微信中打开
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            $('.weixin').show()
+        }
+        //判断平台
+        if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            window.location.href = './p.index.html';
+        }
+        var matchId = getQueryString('matchId');
+        var playtypeId = getQueryString('playtypeId');
+        var oddsId = getQueryString('oddsId');
+        var amount = getQueryString('amount');
+        var payStatus = false;
+        var timeoutId;
+
+        //点击确定按钮
+        $('.addr-btn').on('click', function (e) {
+            var addr = $('.addr-input').val();
+            if (!addr || !checkAddress(addr)) {
+                $('.addr-input').addClass('err');
+                $('.err-msg').css('opacity', '1');
+            } else {
+
+                $.ajax({
+                    type: "get",
+                    url: requestUrl + '/v1/fifa/check-address?address=' + addr,
+                    async: false,
+                    crossDomain: true,
+                    xhrFields: {withCredentials: true},
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        if (data.code == '0' && data.data == '0') {
+                            $('.addr-input').removeClass('err');
+                            $('.err-msg').css('opacity', '0');
+                            $.cookie('address', addr, {path: '/', expire: 30});
+                            userBetSubmit(addr);
+
+                        } else {
+                            $('.addr-input').addClass('err');
+                            $('.err-msg').css('opacity', '1');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('***************', err);
+                    }
+                });
+
+            }
+
+        })
+
+        //保存用户投注
+        function userBetSubmit(addr) {
+            $.ajax({
+                type: "post",
+                url: requestUrl + '/v1/fifa/add-fifaCathectic',
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                data: {
+                    matchId: matchId,
+                    playtypeId: playtypeId,
+                    oddsId: oddsId,
+                    amount: amount,
+                    fromAddr: addr
+                },
+                success: function (data) {
+
+                    if (data.code == '0' && data.data) {
+
+                        $('#pay-count').html(' ' + data.data.amount + ' TTT');
+
+                        $('#qrcode').html('');
+
+                        $('#qrcode').qrcode({
+                            render: "canvas",
+                            width: 200,
+                            height: 200,
+                            text: 'TTT:' + data.data.address + '?amount=' + (data.data.amount * 1000000)
+                        });
+
+                        $('.app-btn').attr('href', 'ttt://' + data.data.address + '?amount=' + (data.data.amount * 1000000));
+
+                        $('#copy-text').val(data.data.address);
+
+                        $('#myModal').modal('show');
+
+                        timeoutId = setInterval(function () {
+                            checkPay(data.data.address);
+                            if (payStatus) {
+                                clearInterval(timeoutId);
+                                $('#myModal').modal('hide');
+                                window.location.href = './m.betHistory.html?address=' + addr;
+                            }
+                        }, 2000);
+
+                    } else if (data.code == '3004') {
+                        $('.warning-img').attr('src', './Public/image/bet_overtime_alert.png');
+                        $('#tipModal').modal('show');
+
+                    } else if (data.code == '3005') {
+                        $('.warning-img').attr('src', './Public/image/bet_end_alert.png');
+                        $('#tipModal').modal('show');
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+        }
+
+        //检查付款状态
+        function checkPay(address) {
+
+            $.ajax({
+                type: "get",
+                url: requestUrl + '/v1/fifa/check-balances?address=' + address,
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.code == '0' && data.data == '0') {
+                        payStatus = true;
+                    } else {
+                        payStatus = false;
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+
+        }
+
+        //关闭支付窗口
+        $('.pay-close').on('click', function (e) {
+            clearInterval(timeoutId);
+            window.location.href = './m.betHistory.html?address=' + $.cookie('address');
+        })
+        //关闭提示窗口
+        $('.back-index-close').on('click', function (e) {
+            window.location.href = './index.html';
+        })
+        //复制地址
+        var clipboard = new ClipboardJS('.copy-btn');
+        clipboard.on('success', function (e) {
+            $('.copy-tip').fadeIn();
+            setTimeout(function () {
+                $('.copy-tip').fadeOut();
+            }, 3000)
+        });
+
+        //选择语言
+        var translator;       //设置默认语言
+
+        if ($.cookie('locale') == 'en_US') {
+            translator = $('html').translate({lang: "en", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+            $('.addr-input').attr('placeholder', 'Please enter your Trustnote wallet address');
+
+        } else {
+            translator = $('html').translate({lang: "zh", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+            $('.addr-input').attr('placeholder', '输入你的TTT钱包收款地址');
+        }
+
+        //切换语言
+        $('.switchZh').on('click', function (e) {
+
+            $.cookie('locale', 'zh_CN', {path: '/', expire: 30});
+            translator.lang("zh");
+            switchLanguage('zh_CN');
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+            if (!$('.addr-input').val()) {
+                $('.addr-input').attr('placeholder', '输入你的TTT钱包收款地址');
+            }
+
+        })
+        $('.switchEn').on('click', function (e) {
+
+            $.cookie('locale', 'en_US', {path: '/', expire: 30});
+            translator.lang("en");
+            switchLanguage('en_US');
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+            if (!$('.addr-input').val()) {
+                $('.addr-input').attr('placeholder', 'Please enter your Trustnote wallet address');
+            }
+
+        })
+
+
+    })
+</script>
+
+</body>
+</html>

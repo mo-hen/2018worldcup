@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>2018世界杯预测竞猜</title>
+    <link href="./asset/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./Public/css/pc.css">
+    <style type="text/css">
+
+        /*猜冠军*/
+        .title span {
+            color: #FBE34C;
+            font-size: 18px;
+            margin-left: 10px;
+            font-weight: 500;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .items-head {
+            height: 30px;
+            color: #FFFFFF;
+            font-size: 16px;
+            line-height: 30px;
+            margin-top: 15px;
+        }
+
+        .head-left {
+            height: 25px;
+            float: left;
+            padding-left: 35px;
+            background: url("./Public/image/gold_ttt.png") center left no-repeat;
+            background-size: 25px;
+        }
+
+        .head-left span {
+            color: #FFE401;
+            margin-left: 10px;
+        }
+
+        .head-right {
+            float: left;
+            margin-left: 20px;
+        }
+
+        .items {
+            margin: 15px -0.5rem;
+            display: flex;
+            display: -webkit-flex;
+            flex-wrap: wrap;
+            justify-content: left;
+        }
+
+        /*item 未选中*/
+        .item {
+            position: relative;
+            width: 10rem;
+            opacity: 0.7;
+            margin: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            background: #D8D8D8;
+        }
+
+        .item .up {
+            text-align: center;
+        }
+
+        .up img {
+            width: 3rem;
+        }
+
+        .item .down {
+            color: #000000;
+            margin-top: 0.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .down p {
+            margin: 0;
+        }
+
+        p.percent {
+            height: 1.5rem;
+            display: inline-block;
+            padding-left: 1.2rem;
+            background: url("./Public/image/black_user.png") center left no-repeat;
+            background-size: 1rem;
+        }
+
+        /*item 选中*/
+        .item.checked {
+            background-color: #FBE34C;
+        }
+
+        .item.drop:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            opacity: 0.6;
+            cursor: default;
+            background-color: #000000;
+        }
+
+        /*下注数量*/
+        .bet-submit {
+            width: 427px;
+            font-size: 18px;
+            color: white;
+            margin: 50px auto;
+            position: relative;
+        }
+
+        .bet-submit .bg {
+            width: 1395px;
+            height: 257px;
+            position: absolute;
+            bottom: -203px;
+            left: -500px;
+            z-index: -10;
+            background: url("./Public/image/champion_sub_mans.png") top center no-repeat;
+        }
+
+        #bet_select {
+            width: 102px;
+            height: 32px;
+            color: black;
+            padding-left: 10px;
+            border: none;
+            background: url("./Public/image/select.png");
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
+
+        #bet_select option {
+            text-align: center;
+        }
+
+        .bet-count {
+            height: 32px;
+        }
+
+        .bet-count .bet-count-left {
+            float: left;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .bet-count-right {
+            float: left;
+            line-height: 32px;
+            margin-left: 15px;
+        }
+
+        .sub-btn {
+            width: 427px;
+            height: 52px;
+            color: #333333;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 52px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            background-color: #F3D802;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -ms-user-select: none;
+             user-select: none;
+        }
+
+        .sub-disable {
+            cursor: default;
+            background-color: #ccc;
+        }
+    </style>
+    <!--生成option-->
+    <script type="text/html" id="optionTpl">
+        <% for(var i = 0 ; i < 100 ; i++){%>
+        <option value="<%= i+1 %>"><%= i+1 %></option>
+        <%}%>
+    </script>
+    <!--获取数据-->
+    <script type="text/html" id="championTpl">
+
+        <div class="items-head">
+            <div class="head-left">
+                <i class="trn">Bonus pool</i> <span><%= currentAmount %> TTT</span>
+            </div>
+            <div class="head-right">
+                <i class="trn">Deadline</i>：<%= formatDate(gameStartTime)%>～<%= formatDate(cathecticEndTime)%>
+            </div>
+        </div>
+        <div class="items" data-num="<%= id %>">
+
+            <% for(var i = 0 ; i < macthInfoOddsDTOList.length ; i++){%>
+            <div class="item <% if(macthInfoOddsDTOList[i].status == 1){%>drop<%}%>" data-num="<%= macthInfoOddsDTOList[i].id%>">
+                <div class="up">
+                    <img src="<%= macthInfoOddsDTOList[i].imagePath%>" alt="">
+                </div>
+                <div class="down">
+                    <p><%= macthInfoOddsDTOList[i].name%></p>
+                    <p><i class="trn">Odds</i> <span class="item-odds"><%= macthInfoOddsDTOList[i].odds.toFixed(2)%></span></p>
+                    <p class="percent"><%= macthInfoOddsDTOList[i].cathecticRatio.toFixed(2) %> %</p>
+                </div>
+            </div>
+            <%}%>
+
+        </div>
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="top-img">
+        <div class="top-left-img"></div>
+        <img class="top-middle-img" src="Public/image/title.png">
+    </div>
+    <div class="index-box">
+        <!--当前赛事-->
+        <div class="item-box">
+            <!--赛事玩法-->
+            <div class="title">
+                <img src="./Public/image/wincup.png" alt="">
+                <span class="trn">Champion</span>
+            </div>
+            <div class="item-data">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<!--下注数量-->
+<div class="bet-submit">
+    <div class="bet-count">
+        <div class="bet-count-left">
+            <i class="trn">Number</i>：<select id="bet_select"></select>
+        </div>
+        <div class="bet-count-right">
+            <i class="trn">In theory you can win</i>：<span id="bet-bonus">0</span>
+        </div>
+    </div>
+    <div class="sub-btn sub-disable trn">Betting now</div>
+    <div class="bg"></div>
+</div>
+<!--语言-->
+<div class="clearfix"></div>
+<div class="lang">
+    <span class="switchZh">中文</span> | <span class="switchEn">English</span>
+</div>
+
+<script src="./asset/jquery/jquery.min.js"></script>
+<script src="./asset/jquery/jquery.translate.js"></script>
+<script src="./asset/bootstrap/bootstrap.min.js"></script>
+<script src="asset/artTemplate/template-native-debug.js"></script>
+<script src="./asset/jquery/jquery.cookie.js"></script>
+<script src="./Public/js/config.js"></script>
+<script src="./Public/js/common.js"></script>
+<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script>
+    $(function () {
+
+        //时间戳格式化
+        template.helper('formatDate', function (num) {
+            return timestampToTime(num);
+        });
+        //下注数量
+        var options = template('optionTpl', {});
+        $('#bet_select').html(options);
+
+        //获取赛事玩法
+        function getChampionList() {
+            $.ajax({
+                type: "get",
+                url: requestUrl + '/v1/fifa/getwinning-road',
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.code == '0') {
+                        var html = template('championTpl', data.data);
+                        $('.item-data').html(html);
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+        }
+
+        //选择玩法 bet-item-obj bet-item-obj-name
+        $('.item-data').on('click', '.item', function (e) {
+
+            if($(e.target).closest('.item').hasClass('drop')) return false;
+
+            $('.item').removeClass('checked');
+            $(e.target).closest('.item').addClass('checked');
+
+            var amount = $('#bet_select').val();
+            var odds = $('.checked').find('.item-odds').text();
+
+            $('#bet-bonus').text((amount * odds).toFixed(2));
+            $('.sub-btn').removeClass('sub-disable')
+
+        })
+
+        //选择投注数量
+        $('#bet_select').on('change', function (e) {
+
+            var amount = $('#bet_select').val();
+            var odds = $('.checked').find('.item-odds').text();
+
+            if (amount && odds) {
+                $('#bet-bonus').text((amount * odds).toFixed(2))
+            }
+        })
+
+        //下注
+        $('.sub-btn').on('click', function (e) {
+
+            if ($(e.target).hasClass('sub-disable')) return false;
+
+            var matchId = $('.items').data('num');
+            var amount = $('#bet_select').val();
+            var oddsId = $('.checked').data('num');
+
+            window.location.href = './address.html?matchId=' + matchId + '&oddsId=' + oddsId + '&amount=' + amount;
+        })
+
+        //选择语言
+        var translator;       //设置默认语言
+
+        if ($.cookie('locale') == 'en_US') {
+
+            getChampionList()
+            translator = $('html').translate({lang: "en", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        } else {
+
+            getChampionList()
+            translator = $('html').translate({lang: "zh", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+        }
+
+        //切换语言
+        $('.switchZh').on('click', function (e) {
+
+            $.cookie('locale', 'zh_CN', {path: '/', expire: 30});
+            switchLanguage('zh_CN');
+            getChampionList()
+            translator.lang("zh");
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+        })
+        $('.switchEn').on('click', function (e) {
+
+            $.cookie('locale', 'en_US', {path: '/', expire: 30});
+            switchLanguage('en_US');
+            getChampionList()
+            translator.lang("en");
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        })
+
+    })
+</script>
+</body>
+</html>

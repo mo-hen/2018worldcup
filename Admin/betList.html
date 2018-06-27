@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投注列表</title>
+    <link rel="stylesheet" href="./assets/layui/css/layui.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="./assets/nprogress/nprogress.css">
+    <link rel="stylesheet" href="./less/index.css">
+    <style type="text/css">
+        .checkAll {
+            cursor: pointer;
+            display: none;
+        }
+
+        #export-btn {
+            margin-left: 25px;
+        }
+    </style>
+    <script id="dataTpl" type="text/html">
+        <% for(var i=0;i < data.length ; i++){ %>
+        <tr>
+            <td><%=data[i].id%></td>
+            <td><%= formatDate(data[i].createTime)%></td>
+            <td><%=data[i].homecourtName%> vs <%=data[i].awaycourtName%></td>
+            <td><%=data[i].oddsName%></td>
+            <td><%=data[i].playTypeName%></td>
+            <td><%=data[i].amount%></td>
+            <td><%=data[i].fromAddr%></td>
+            <td><%=data[i].toAddr%></td>
+            <td> <%= data[i].paymentStatus%></td>
+            <td> <%= data[i].winningStatus%></td>
+            <td> <%= data[i].bonusStatus%></td>
+        </tr>
+        <%}%>
+    </script>
+    <script id="dataFilterTpl" type="text/html">
+        <% for(var i=0;i < data.length ; i++){ %>
+        <tr>
+            <td><input type="checkbox" class="check-item" data-num="<%=data[i].id%>"></td>
+            <td><%=data[i].id%></td>
+            <td><%= formatDate(data[i].createTime)%></td>
+            <td> <%=data[i].homecourtName%> vs <%=data[i].awaycourtName%></td>
+            <td><%=data[i].oddsName%></td>
+            <td><%=data[i].playTypeName%></td>
+            <td><%=data[i].amount%></td>
+            <td><%=data[i].fromAddr%></td>
+            <td><%=data[i].toAddr%></td>
+            <td> <%= data[i].paymentStatus%></td>
+            <td> <%= data[i].winningStatus%></td>
+            <td> <%= data[i].bonusStatus%></td>
+        </tr>
+        <%}%>
+    </script>
+</head>
+<body>
+<!-- 侧边栏 -->
+<div class="aside">
+    <!-- 个人资料 -->
+    <div class="profile">
+        <!-- 头像 -->
+        <div class="avatar img-circle">
+            <img src="./uploads/default.jpg">
+        </div>
+        <h4 id="username">admin</h4>
+    </div>
+    <!-- 导航菜单 -->
+    <div class="navs">
+        <ul class="list-unstyled">
+            <li>
+                <a href="./index.html">
+                    <i class="fa fa-home"></i>
+                    赛事列表
+                    <i class="arrow fa fa-angle-right"></i>
+                </a>
+            </li>
+            <!--查看投注-->
+            <li>
+                <a href="./champion.html">
+                    <i class="glyphicon glyphicon-education"></i>
+                    猜冠军
+                    <i class="arrow fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 主体 -->
+<div class="main">
+    <div class="container-fluid">
+        <!-- 头部 -->
+        <div class="header">
+            <nav class="navbar navbar-custom">
+                <div class="navbar-header">
+                    <a href="javascript:;" class="navbar-brand">
+                        <i class="fa fa-navicon"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge">8</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="setting.html">
+                            <i class="fa fa-user"></i>
+                            个人中心
+                        </a>
+                    </li>
+                    <li id="logout">
+                        <a href="javascript:;">
+                            <i class="fa fa-sign-out"></i>
+                            退出
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="body course-category">
+            <!-- 面包屑 -->
+            <ol class="breadcrumb">
+                <li><a href="javascript:;">查看投注</a></li>
+                <li class="active bet-vs">俄罗斯 vs 沙特</li>
+            </ol>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!--筛选条件-->
+                    <form action="" class="form-inline">
+                        <button class="btn btn-info btn-sm" id="updateBtn">查看全部</button>
+                        <button class="btn btn-success btn-sm" id="filterBtn">只看猜中的未打款订单</button>
+
+                        <a class="btn btn-default btn-sm pull-right" id="export-btn" target="_blank">导出投注信息</a>
+                        <button class="btn btn-primary btn-sm pull-right" id="group-btn">批量打款</button>
+                    </form>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="active">
+                        <th class="checkAll">
+                            <input type="checkbox" id="check-all">全选
+                        </th>
+                        <th>id</th>
+                        <th>投注时间</th>
+                        <th>投注赛事</th>
+                        <th>投注选项</th>
+                        <th>玩法</th>
+                        <th>数量（TTT）</th>
+                        <th>from</th>
+                        <th>to</th>
+                        <th>支付状态</th>
+                        <th>中奖状态</th>
+                        <th>奖金状态</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-data">
+                    <tr>
+                        <td colspan="12">暂无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 分页 -->
+            <div class="pager" id="pager"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="../asset/jquery/jquery.min.js"></script>
+<script src="./assets/jquery/jquery.min.js"></script>
+<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/nprogress/nprogress.js"></script>
+<script src="./assets/jquery/jquery.cookie.js"></script>
+<script src="./assets/artTemplate/template-native-debug.js"></script>
+<script src="./assets/layui/layui.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/config.js"></script>
+
+<script type="text/javascript">
+    const param = {
+        page: 1, //当前页
+        length: 100,
+        pages: 0
+    }
+    checkLogin()
+    //时间戳格式化
+    template.helper('formatDate', function (num) {
+        return timestampToDateTime(num);
+    });
+    var id = getQueryString('id');
+
+    //getBetList(id, 1);
+
+    function getBetList(id, condition) {
+        //1:未中奖2:中奖
+        $('#export-btn').attr('href', requestUrl + '/v1/admin/export-cathecticlist?id=' + id + '&condition=' + condition);
+        $.ajax({
+            type: "get",
+            url: requestUrl + '/v1/admin/odds/query-cathecticlist',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            data: {
+                id: id,
+                condition: condition,
+                index: param.page,
+                length: param.length
+            },
+            success: function (data) {
+                if (data.code == '0') {
+                    if (data.data.listObject.length > 0) {
+                        $('.bet-vs').html(data.data.listObject[0].homecourtName + ' vs ' + data.data.listObject[0].awaycourtName);
+                        var html = '';
+                        if (condition == 1) {
+                            html = template('dataTpl', {data: data.data.listObject});
+                        } else {
+                            html = template('dataFilterTpl', {data: data.data.listObject});
+                        }
+                        // param.pages = Math.ceil(data.data.totals / param.length);
+                        param.pages = data.data.totals;
+
+                        $('#table-data').html(html);
+                    } else {
+                        $('#table-data').html('<tr><td colspan="12">暂无数据</td></tr>');
+                    }
+                } else if (data.code == '3007') {
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+                }
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+    }
+
+    //批量打款
+    $('#group-btn').on('click', function (e) {
+        e.preventDefault()
+        var ids = [];
+        $("input.check-item:checkbox:checked").each(function () {
+            ids.push($(this).data('num'))
+        })
+        ids = ids.join(',');
+        console.log(ids);
+        if (ids.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: requestUrl + '/v1/admin/bulk-money?ids=' + ids,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                // dataType: 'json',
+                // contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.code == '0') {
+                        alert('打款成功')
+                    } else if (data.code == '3007') {
+                        alert('没有登录，或登录超时！')
+                        window.location.href = "/login.html"
+                    }else if(data.code == '3006'){
+                        alert('余额不够，或者打款交易未确认')
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+        } else {
+            alert('请选择打款项')
+        }
+
+    })
+
+    //全选
+    $("#check-all").on('click', function (e) {
+        $(".check-item").attr("checked", "true");
+    })
+
+    layui.use(['laypage', 'layer'], function () {
+
+        var laypage = layui.laypage, layer = layui.layer;
+
+        getBetList(id, 1);
+
+        pageShow(1);
+
+        //分页渲染
+        function pageShow(condition) {
+            laypage.render({
+                elem: 'pager'
+                , count: param.pages
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+                , limit: 100
+                , limits: [100]
+                , jump: function (obj, first) {
+                    console.log(obj)
+                    param.page = obj.curr;
+                    param.length = obj.limit;
+                    if (!first) {
+                        getBetList(id, condition);
+                    }
+                }
+            })
+        }
+
+        //只看猜中的未打款订单
+        $('#filterBtn').on('click', function (e) {
+            e.preventDefault()
+            $('.checkAll').show();
+            getBetList(id, 2)
+            pageShow(2)
+        })
+
+        //查看全部
+        $('#updateBtn').on('click', function (e) {
+            e.preventDefault()
+            $('.checkAll').hide();
+            getBetList(id, 1)
+            pageShow(1)
+        })
+
+    })
+
+</script>
+</body>
+</html>

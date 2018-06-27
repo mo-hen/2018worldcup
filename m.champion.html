@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>2018世界杯预测竞猜</title>
+    <link href="./asset/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="./Public/css/common.css">
+    <style type="text/css">
+
+        .item-box {
+            margin: 0 auto;
+            width: 27rem;
+        }
+
+        .title img {
+            width: 1.5rem;
+            height: 3rem;
+        }
+
+        .title span {
+            color: #FBE34C;
+            line-height: 2rem;
+            font-size: 1.3rem;
+            margin-left: 0.5rem;
+            font-weight: 500;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .items-head {
+            height: 2rem;
+            color: #FFFFFF;
+            font-size: 0.9rem;
+            line-height: 2rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .head-left {
+            float: left;
+            padding-left: 2rem;
+            background: url("./Public/image/gold_ttt.png") center left no-repeat;
+            background-size: 1.5rem;
+        }
+
+        .head-left span {
+            color: #FFE401;
+            margin-left: 0.2rem;
+        }
+
+        .head-right {
+            float: right;
+        }
+
+        .items {
+            display: flex;
+            display: -webkit-flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /*item 未选中*/
+        .item {
+            position: relative;
+            width: 6.2rem;
+            opacity: 0.7;
+            margin: 0.2rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            background: #D8D8D8;
+        }
+
+        .item .up {
+            text-align: center;
+        }
+
+        .up img {
+            width: 2rem;
+        }
+
+        .item .down {
+            color: #000000;
+            margin-top: 0.2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .down p {
+            margin: 0;
+        }
+
+        p.percent {
+            height: 1rem;
+            display: inline-block;
+            padding-left: 1rem;
+            padding-top: 0.1rem;
+            background: url("./Public/image/black_user.png") center left no-repeat;
+            background-size: 0.8rem;
+        }
+
+        /*item 选中*/
+        .item.checked {
+            background-color: #FBE34C;
+        }
+
+        .item.drop:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            opacity: 0.6;
+            background-color: #000000;
+        }
+
+        /*小贴士*/
+        .tips {
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            background: url("./Public/image/m_tip_person.png") top center no-repeat;
+            background-size: 26rem;
+        }
+
+        .content {
+            width: 20rem;
+            margin: 0 auto;
+            padding: 1rem;
+            color: #ffffff;
+            border: solid 1px #F3D802;
+        }
+
+        .tips h5 {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .tips p {
+            width: 17rem;
+            margin: 0.2rem auto;
+            padding-left: 1.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            text-indent: -1.5rem;
+        }
+
+        /*下注数量*/
+        .foot {
+            width: 100%;
+            height: 3.8rem;
+            color: #000000;
+            font-size: 1rem;
+            text-align: right;
+            box-sizing: content-box;
+            background-color: white;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .foot-left {
+            width: 68%;
+            height: 3.8rem;
+            text-align: left;
+            line-height: 3.8rem;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .foot-left span {
+            padding-left: 0.5rem;
+        }
+
+        #bet_select {
+            width: 3rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            padding-left: 0.5rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            border: none;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background: #EBEBEB;
+        }
+
+        .sub-btn {
+            width: 30%;
+            height: 3.8rem;
+            text-align: center;
+            line-height: 3.8rem;
+            display: inline-block;
+            vertical-align: middle;
+            background-color: #FBE34C;
+        }
+
+        .sub-disable {
+            background-color: #CCCCCC;
+        }
+
+        /*语言选择*/
+        .lang {
+            margin-top: 2rem;
+            margin-bottom: 6rem;
+        }
+
+        @media screen and (max-width: 410px) {
+            .item-box {
+                width: 24rem;
+            }
+
+            .title img {
+                width: 1.2rem;
+                height: 2.8rem;
+            }
+
+            .title span {
+                line-height: 1.5rem;
+                font-size: 1rem;
+                margin-left: 0.2rem;
+            }
+
+            .items-head {
+                height: 1.6rem;
+                line-height: 1.6rem;
+                margin-top: 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .head-left {
+                padding-left: 1.5rem;
+                background-size: 1.3rem;
+            }
+
+            .items {
+                margin-top: 0.2rem;
+            }
+
+            .item {
+                width: 5.5rem;
+                padding: 0.5rem 0.2rem;
+            }
+
+            .item .down {
+                font-size: 0.6rem;
+            }
+
+        }
+
+        @media screen and (max-width: 320px) {
+            .item-box {
+                width: 21.5rem;
+            }
+
+            .title img {
+                width: 1.2rem;
+                height: 2.5rem;
+            }
+
+            .title span {
+                line-height: 1.5rem;
+                font-size: 1rem;
+                margin-left: 0.2rem;
+            }
+
+            .items-head {
+                height: 1.6rem;
+                font-size: 0.7rem;
+                line-height: 1.6rem;
+                margin-top: 0.3rem;
+            }
+
+            .head-left {
+                padding-left: 1.5rem;
+                background-size: 1.3rem;
+            }
+
+            .items {
+                margin-top: 0.2rem;
+            }
+
+            .item {
+                width: 6.5rem;
+
+            }
+
+            .tips {
+                background-size: 22rem;
+            }
+
+            .content {
+                width: 18rem;
+                padding: 0.5rem;
+            }
+
+            .foot-left {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    <!--生成option-->
+    <script type="text/html" id="optionTpl">
+        <% for(var i = 0 ; i < 100 ; i++){%>
+        <option value="<%= i+1 %>"><%= i+1 %></option>
+        <%}%>
+    </script>
+    <!--获取数据-->
+    <script type="text/html" id="championTpl">
+
+        <div class="items-head">
+            <div class="head-left">
+                <i class="trn">Bonus pool</i> <span><%= currentAmount %> TTT</span>
+            </div>
+            <div class="head-right">
+                <i class="trn">Deadline</i>：<%= formatDate(gameStartTime)%>～<%= formatDate(cathecticEndTime)%>
+            </div>
+        </div>
+        <div class="items" data-num="<%= id %>">
+
+            <% for(var i = 0 ; i < macthInfoOddsDTOList.length ; i++){%>
+            <div class="item <% if(macthInfoOddsDTOList[i].status == 1){%>drop<%}%>"
+                 data-num="<%= macthInfoOddsDTOList[i].id%>">
+                <div class="up">
+                    <img src="<%= macthInfoOddsDTOList[i].imagePath%>" alt="">
+                </div>
+                <div class="down">
+                    <p><%= macthInfoOddsDTOList[i].name%></p>
+                    <p><i class="trn">Odds</i> <span
+                            class="item-odds"><%= macthInfoOddsDTOList[i].odds.toFixed(2)%></span></p>
+                    <p class="percent"><%= macthInfoOddsDTOList[i].cathecticRatio.toFixed(2) %> %</p>
+                </div>
+            </div>
+            <%}%>
+
+        </div>
+
+    </script>
+</head>
+<body>
+<div class="top-head">
+    <img class="top-middle-img" src="Public/image/title.png">
+    <a class="back" href="./m.index.html"></a>
+</div>
+<div class="main">
+    <!--当前赛事-->
+    <div class="item-box">
+        <!--赛事玩法-->
+        <div class="title">
+            <img src="./Public/image/wincup.png" alt="">
+            <span class="trn">Champion</span>
+        </div>
+        <div class="item-data">
+
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="foot">
+    <div class="foot-left">
+        <span><i class="trn">Number</i></span><select id="bet_select"></select>
+        <span><i class="trn">In theory you can win</i></span><span id="bet-bonus">0</span>
+    </div>
+    <div class="sub-btn sub-disable trn">Betting now</div>
+</div>
+<!--语言-->
+<div class="clearfix"></div>
+<div class="lang">
+    <span class="switchZh">中文</span> | <span class="switchEn">English</span>
+</div>
+
+<!--微信端打开-->
+<div class="weixin">
+    <img src="./Public/image/weixin.png" alt="">
+</div>
+
+<script src="./asset/jquery/jquery.min.js"></script>
+<script src="./asset/jquery/jquery.translate.js"></script>
+<script src="./asset/bootstrap/bootstrap.min.js"></script>
+<script src="asset/artTemplate/template-native-debug.js"></script>
+<script src="./asset/jquery/jquery.cookie.js"></script>
+<script src="./Public/js/config.js"></script>
+<script src="./Public/js/common.js"></script>
+<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script>
+    $(function () {
+        //微信中打开
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            $('.weixin').show()
+        }
+        //判断平台
+        if (!/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            window.location.href = './p.index.html';
+        }
+
+        //时间戳格式化
+        template.helper('formatDate', function (num) {
+            return timestampToTime(num);
+        });
+        //下注数量
+        var options = template('optionTpl', {});
+        $('#bet_select').html(options);
+
+        //获取赛事玩法
+        function getChampionList() {
+            $.ajax({
+                type: "get",
+                url: requestUrl + '/v1/fifa/getwinning-road',
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.code == '0') {
+                        var html = template('championTpl', data.data);
+                        $('.item-data').html(html);
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+                }
+            });
+        }
+
+        //选择玩法 bet-item-obj bet-item-obj-name
+        $('.item-data').on('click', '.item', function (e) {
+
+            if ($(e.target).closest('.item').hasClass('drop')) return false;
+
+            $('.item').removeClass('checked');
+            $(e.target).closest('.item').addClass('checked');
+
+            var amount = $('#bet_select').val();
+            var odds = $('.checked').find('.item-odds').text();
+
+            $('#bet-bonus').text((amount * odds).toFixed(2));
+            $('.sub-btn').removeClass('sub-disable')
+
+        })
+
+        //选择投注数量
+        $('#bet_select').on('change', function (e) {
+
+            var amount = $('#bet_select').val();
+            var odds = $('.checked').find('.item-odds').text();
+
+            if (amount && odds) {
+                $('#bet-bonus').text((amount * odds).toFixed(2))
+            }
+        })
+
+        //下注
+        $('.sub-btn').on('click', function (e) {
+
+            if ($(e.target).hasClass('sub-disable')) return false;
+
+            var matchId = $('.items').data('num');
+            var amount = $('#bet_select').val();
+            var oddsId = $('.checked').data('num');
+
+            window.location.href = './m.address.html?matchId=' + matchId + '&oddsId=' + oddsId + '&amount=' + amount;
+        })
+
+        //选择语言
+        var translator;       //设置默认语言
+
+        if ($.cookie('locale') == 'en_US') {
+
+            getChampionList()
+            translator = $('html').translate({lang: "en", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        } else {
+
+            getChampionList()
+            translator = $('html').translate({lang: "zh", t: dict});
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+        }
+
+        //切换语言
+        $('.switchZh').on('click', function (e) {
+
+            $.cookie('locale', 'zh_CN', {path: '/', expire: 30});
+            switchLanguage('zh_CN');
+            getChampionList()
+            translator.lang("zh");
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+        })
+        $('.switchEn').on('click', function (e) {
+
+            $.cookie('locale', 'en_US', {path: '/', expire: 30});
+            switchLanguage('en_US');
+            getChampionList()
+            translator.lang("en");
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        })
+
+
+    })
+</script>
+</body>
+</html>

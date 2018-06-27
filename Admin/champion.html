@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投注列表</title>
+    <link rel="stylesheet" href="./assets/layui/css/layui.css">
+    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="./assets/nprogress/nprogress.css">
+    <link rel="stylesheet" href="./assets/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="./less/index.css">
+    <style type="text/css">
+        .items {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            -webkit-flex-wrap: wrap;
+
+        }
+
+        .items input {
+            text-align: center;
+            padding: 6px;
+        }
+
+        .item {
+            width: 200px;
+            padding: 10px;
+            margin: 10px;
+            position: relative;
+            border: solid 1px #CCCCCC;
+            background-color: #F2F2F2;
+        }
+
+        .item-value {
+            margin-top: 5px;
+        }
+
+        .item-control {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .old-item input {
+            border: dashed 1px;
+        }
+
+        .old-item-edit, .old-item-del {
+            position: absolute;
+            top: 10px;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            line-height: 16px;
+            cursor: pointer;
+            padding: 2px 10px;
+            border-radius: 5px;
+        }
+
+        .old-item-edit {
+            right: 60px;
+            background: green;
+        }
+
+        .old-item-del {
+            right: 10px;
+            background: red;
+        }
+
+        .hid {
+            display: none;
+        }
+    </style>
+    <script id="championTpl" type="text/html">
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">开始投注日期</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control date-picker" value="<%= formatDate(gameStartTime)%>" id="bet-start">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">截止投注日期</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control date-picker" value="<%= formatDate(cathecticEndTime)%>" id="bet-end">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">投注上限封顶</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" value="<%= maxAmount %>" id="maxAmount">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">&nbsp;</label>
+                <div class="col-sm-3">
+                    <button type="button" class=" btn btn-info edit-bet-btn" data-num="<%= id %>">更新基本信息</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">设置赔率/淘汰/冠军</h3>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="items">
+
+                    <% for(var i=0 ; i < macthInfoOddsDTOList.length ; i++){%>
+
+                    <div class="item">
+                        <span class="label label-primary name"><%= macthInfoOddsDTOList[i].name %></span>
+
+                        <div class="item-value">
+
+                            <input type="text" class="form-control item-input"
+                                   value="<%= macthInfoOddsDTOList[i].odds %>">
+
+                            <span class="old-item-edit hid" data-num="<%= macthInfoOddsDTOList[i].id %>">确定</span>
+
+                            <span class="old-item-del hid">取消</span>
+
+                        </div>
+
+                        <div class="item-control">
+                            <% if(macthInfoOddsDTOList[i].status == 0){%>
+                            <span class="label label-default weed-out"
+                                  data-num="<%= macthInfoOddsDTOList[i].id %>">设为淘汰</span>
+                            <%}else{%>
+                            <span class="label label-danger cancel-out" data-num="<%= macthInfoOddsDTOList[i].id %>">取消淘汰</span>
+                            <%}%>
+
+                            <span class="label label-success add-champion" data-num="<%= macthInfoOddsDTOList[i].id %>">设置冠军</span>
+                        </div>
+
+                    </div>
+
+                    <%}%>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </script>
+</head>
+<body>
+<!-- 侧边栏 -->
+<div class="aside">
+    <!-- 个人资料 -->
+    <div class="profile">
+        <!-- 头像 -->
+        <div class="avatar img-circle">
+            <img src="./uploads/default.jpg">
+        </div>
+        <h4 id="username">admin</h4>
+    </div>
+    <!-- 导航菜单 -->
+    <div class="navs">
+        <ul class="list-unstyled">
+            <li>
+                <a href="./index.html">
+                    <i class="fa fa-home"></i>
+                    赛事列表
+                    <i class="arrow fa fa-angle-right"></i>
+                </a>
+            </li>
+            <!--查看投注-->
+            <li>
+                <a href="./champion.html" class="active">
+                    <i class="glyphicon glyphicon-education"></i>
+                    猜冠军
+                    <i class="arrow fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 主体 -->
+<div class="main">
+    <div class="container-fluid">
+        <!-- 头部 -->
+        <div class="header">
+            <nav class="navbar navbar-custom">
+                <div class="navbar-header">
+                    <a href="javascript:;" class="navbar-brand">
+                        <i class="fa fa-navicon"></i>
+                    </a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge">8</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="setting.html">
+                            <i class="fa fa-user"></i>
+                            个人中心
+                        </a>
+                    </li>
+                    <li id="logout">
+                        <a href="javascript:;">
+                            <i class="fa fa-sign-out"></i>
+                            退出
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="body course-category">
+            <!-- 面包屑 -->
+            <ol class="breadcrumb">
+                <li><a href="javascript:;">猜冠军</a></li>
+                <li class="active">设置</li>
+            </ol>
+            <div class="panel panel-default">
+                <div class="panel-body" id="champion">
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="../asset/jquery/jquery.min.js"></script>
+<script src="./assets/jquery/jquery.min.js"></script>
+<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/nprogress/nprogress.js"></script>
+<script src="./assets/jquery/jquery.cookie.js"></script>
+<script src="./assets/artTemplate/template-native-debug.js"></script>
+<script src="./assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./assets/bootstrap-datepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="./assets/layui/layui.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/config.js"></script>
+
+<script type="text/javascript">
+
+    checkLogin()
+
+    //日期
+    function dateRender() {
+        $('.date-picker').datetimepicker({
+            language: 'zh-CN',
+            autoclose: true,    //选中之后自动隐藏日期选择框
+            todayHighlight: true,
+            format: "yyyy/mm/dd hh:ii"
+        })
+    }
+
+    //时间戳格式化
+    template.helper('formatDate', function (num) {
+        return timestampToDateTime(num);
+    });
+
+    function getChampionList() {
+
+        $.ajax({
+            type: "get",
+            url: requestUrl + '/v1/admin/getwinning-road',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+
+                if (data.code == '0') {
+
+                    var html = template('championTpl', data.data);
+
+                    $('#champion').html(html);
+
+                } else if (data.code == '3007') {
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+                }
+
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+    }
+
+    getChampionList()
+    dateRender()
+
+    //修改冠军信息
+    $('#champion').on('click', '.edit-bet-btn', function (e) {
+        e.preventDefault()
+        $.ajax({
+            type: "post",
+            url: requestUrl + '/v1/admin/match/modify-matchinfo',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            data: {
+                id: e.target.dataset.num,
+                gameStartTime: (new Date($('#bet-start').val())).getTime(),
+                cathecticEndTime: (new Date($('#bet-end').val())).getTime(),
+                maxAmount: $('#maxAmount').val()
+            },
+            success: function (data) {
+                if (data.code == '0') {
+                    getChampionList()
+                    dateRender()
+                    alert('修改成功');
+                    console.log('修改赛事信息-------' + data.msg);
+                } else if (data.code == '3007') {
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+                }
+
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+    })
+
+    //更新赔率 输入框获取焦点
+    $('#champion').on('focus', '.item-input', function (e) {
+        $(e.target).parent().addClass('old-item');
+        $(e.target).parent().find('.old-item-edit').show()
+        $(e.target).parent().find('.old-item-del').show()
+    })
+
+    //更新赔率 输入框失去焦点
+    $('#champion').on('blur', '.item-input', function (e) {
+        setTimeout(function () {
+            $(e.target).parent().removeClass('old-item');
+            $(e.target).parent().find('.old-item-edit').hide()
+            $(e.target).parent().find('.old-item-del').hide()
+        }, 300);
+    })
+
+    //更新赔率 提交修改内容
+    $('#champion').on('click', '.old-item-edit', function (e) {
+
+        var id = e.target.dataset.num;
+        var name = $(e.target).closest('.item').find('.name').text();
+        var odds = $(e.target).parent().find('.item-input').val();
+
+        $.ajax({
+            type: "post",
+            url: requestUrl + '/v1/admin/odds/modify-odds-info',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            data: {
+                id: id,
+                odds: odds
+            },
+            success: function (data) {
+
+                if (data.code == '0') {
+
+                    getChampionList()
+                    dateRender()
+
+                } else if (data.code == '3007') {
+
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+
+                }
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+
+        $(e.target).parent().removeClass('old-item');
+        $(e.target).hide()
+
+    })
+
+    //设为淘汰
+    $('#champion').on('click', '.weed-out', function (e) {
+
+        var id = e.target.dataset.num;
+        var name = $(e.target).closest('.item').find('.name').text();
+        var odds = $(e.target).closest('.item').find('.item-input').val();
+
+        $.ajax({
+            type: "post",
+            url: requestUrl + '/v1/admin/odds/modify-odds-info',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            data: {
+                id: id,
+                odds: odds,
+                status: 1
+            },
+            success: function (data) {
+                if (data.code == '0') {
+
+                    getChampionList()
+                    dateRender()
+
+                } else if (data.code == '3007') {
+
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+
+                }
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+
+    })
+
+    //取消淘汰
+    $('#champion').on('click', '.cancel-out', function (e) {
+
+        var id = e.target.dataset.num;
+        var name = $(e.target).closest('.item').find('.name').text();
+        var odds = $(e.target).closest('.item').find('.item-input').val();
+
+        $.ajax({
+            type: "post",
+            url: requestUrl + '/v1/admin/odds/modify-odds-info',
+            async: false,
+            crossDomain: true,
+            xhrFields: {withCredentials: true},
+            data: {
+                id: id,
+                odds: odds,
+                status: 0
+            },
+            success: function (data) {
+                if (data.code == '0') {
+
+                    getChampionList()
+                    dateRender()
+
+                } else if (data.code == '3007') {
+
+                    alert('没有登录，或登录超时！')
+                    window.location.href = "/login.html"
+
+                }
+            },
+            error: function (err) {
+                console.log('***************', err);
+            }
+        });
+
+    })
+
+    layui.use('layer', function () {
+        var layer = layui.layer;
+
+        //设为冠军 点击
+        $('#champion').on('click', '.add-champion', function (e) {
+
+            layer.confirm('确定设为冠军么？(一旦设置不能更改)',{
+                btn: ['取消', '确定']
+            }, function (index) {
+
+                layer.close(index)
+
+            }, function (index) {
+
+                var id = $('.edit-bet-btn').data('num');
+                // var result = $(e.target).closest('.item').find('.name').text();
+                var result = $(e.target).data('num');
+
+                $.ajax({
+                    type: "post",
+                    url: requestUrl + '/v1/admin/save-match-result',
+                    async: false,
+                    crossDomain: true,
+                    xhrFields: {withCredentials: true},
+                    data: {
+                        id: id,
+                        result: result
+                    },
+                    success: function (data) {
+
+                        if (data.code == '0') {
+
+                            layer.close(index);
+                            layer.msg('修改成功');
+
+                        } else if (data.code == '3007') {
+
+                            alert('没有登录，或登录超时！')
+                            window.location.href = "/login.html"
+
+                        } else {
+
+                            layer.msg('修改失败');
+
+                        }
+                    },
+                    error: function (err) {
+                        console.log('***************', err);
+                    }
+                });
+
+            });
+
+
+        })
+
+
+
+    });
+
+
+</script>
+</body>
+</html>

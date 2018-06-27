@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="./Admin/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./Admin/assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="./Admin/assets/nprogress/nprogress.css">
+    <link rel="stylesheet" href="./Admin/less/index.css">
+    <style type="text/css">
+        .login .login-wrap {
+            width: 520px;
+            height: 400px;
+        }
+        .vcode{
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 120px;
+            height: 45px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+<!-- 登录 -->
+<div class="login">
+    <div class="login-wrap">
+        <div class="avatar">
+            <img src="./Admin/uploads/default.jpg" class="img-circle" alt="">
+        </div>
+        <form  id="loginForm" class="col-xs-offset-1 col-xs-10">
+            <div class="input-group input-group-lg">
+                    <span class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                <input type="text" class="form-control" id="tel" name="mobile" placeholder="请输入手机号">
+            </div>
+            <div class="input-group input-group-lg">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key"></i>
+                    </span>
+                <input type="password" name="password" id="pwd" class="form-control" placeholder="密码">
+            </div>
+            <div class="input-group input-group-lg" style="position: relative;">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                </span>
+                <input type="text" class="form-control" id="vcode">
+                <img class="vcode">
+            </div>
+            <button type="submit" id="loginBtn" class="btn btn-lg btn-primary btn-block">登 录</button>
+        </form>
+    </div>
+</div>
+
+<script src="./Admin/assets/jquery/jquery-2.1.4.js"></script>
+<script src="./Admin/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./Admin/js/config.js"></script>
+<script src="./Admin/assets/jquery/jquery.cookie.js"></script>
+<script>
+    $(function () {
+        //初始化验证码
+        $('.vcode').attr('src',requestUrl +'/v1/admin/verification');
+        //登录
+        function login() {
+            //我要获取用户名，密码，发送给服务器。
+            var mobile = $("#tel").val().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            var password = $("#pwd").val().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            var vcode = $('#vcode').val().replace(/^\s\s*/, '').replace(/\s\s*$/, '').toLowerCase();
+            //console.log(userInfo)
+            if (!mobile) {
+                alert("请输入正确的手机号");
+                return
+            }
+            if (!password) {
+                alert("请输入密码");
+                return
+            }
+            if(!vcode){
+                alert("请输入验证码");
+                return
+            }
+            $.ajax({
+                type: "POST",
+                url: requestUrl + '/v1/admin/login?a='+ new Date().getTime(),
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                data: {
+                    username:mobile,
+                    password:password,
+                    vcode:vcode
+                },
+                success: function (data) {
+                    if (data.code == '0' && data.data) {
+                        $.cookie('userTel',data.data,{path:'/',expire:3});
+                        window.location.href = "./Admin/index.html";
+                        return false;
+                    }else if(data.code == '3002'){
+                        alert('参数有误')
+                    }else if(data.code == '3003'){
+                        alert('验证码错误')
+                    }else{
+                        alert('账号密码错误')
+                    }
+                },
+                error: function (e) {
+                    alert('登录失败，用户信息错误')
+                }
+            });
+        }
+
+        $("#loginBtn").on("click", function (e) {
+            if ( e && e.preventDefault )   e.preventDefault();
+            //IE中阻止函数器默认动作的方式
+            else  window.event.returnValue = false;
+            login();
+        });
+        $(document).keydown(function (event) {
+            if (event.keyCode == 13) {
+                login();
+            }
+        })
+
+        $('.vcode').on('click',function (e) {
+            var imgUrl = $(this).attr('src') + '?a='+ new Date().getTime();
+            $(this).attr('src',imgUrl)
+        })
+    });
+</script>
+</body>
+</html>

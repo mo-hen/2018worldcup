@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title class="trn">2018 World Cup Predictions</title>
+    <!-- Bootstrap -->
+    <link href="./asset/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="./Public/css/pc.css?v=1.0.0" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .star-time {
+            color: #FFFFFF;
+            height: 40px;
+            font-size: 20px;
+            line-height: 40px;
+            padding-left: 40px;
+            background: url("./Public/image/clock.png") center left no-repeat;
+            background-size: 26px;
+        }
+
+        .country-item-box {
+            position: relative;
+            width: 392px;
+            height: 109px;
+            background: url("./Public/image/country_box.png") center center no-repeat;
+        }
+
+        .country-item-left {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+        }
+
+        .country-item-right {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+        }
+
+        .country-vs {
+            width: 61px;
+            height: 109px;
+            margin: 0 auto;
+            background: url("./Public/image/vs.png") center center no-repeat;
+        }
+
+        .country-item-left {
+            font-size: 16px;
+            font-weight: bold;
+            color: #008B22;
+        }
+
+        .country-item-left span {
+            margin-left: 10px;
+        }
+
+        .country-item-right span {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: #FFFFFF;
+        }
+
+        .tips {
+            clear: both;
+            color: #F3D802;
+        }
+
+        /*item 未选中*/
+        .bet-item .bet-title {
+            height: 40px;
+            color: white;
+            font-size: 20px;
+            margin-left: 15px;
+            line-height: 40px;
+            padding-left: 45px;
+            background: url("./Public/image/football.png") center left no-repeat;
+            background-size: 28px;
+        }
+
+        .bet-item-obj {
+            cursor: pointer;
+        }
+
+        .bet-item .bet-item-obj .up {
+            height: 40px;
+            width: 130px;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            font-size: 16px;
+            background: url("./Public/image/item_uncheck.png");
+        }
+
+        .bet-item .bet-item-obj .down {
+            height: 61px;
+            width: 130px;
+            color: #FFFFFF;
+            margin-top: 5px;
+            font-size: 15px;
+            border-radius: 3px;
+            text-align: center;
+            border: solid 1px #008C23;
+        }
+
+        .bet-item .bet-item-obj .bet-item-obj-cr {
+            padding: 5px 0 5px 20px;
+            background: url("./Public/image/user.png") center left no-repeat;
+        }
+
+        .bet-item .down .bet-item-obj-odds {
+            margin: 5px 0;
+        }
+
+        /*item 选中*/
+        .column-item-check .bet-item-obj .up {
+            color: black;
+            background: url("./Public/image/item_check.png");
+        }
+
+        .column-item-check .bet-item-obj .down {
+            color: #F3D802;
+            border: solid 1px #F3D802;
+        }
+
+        .column-item-check .bet-item-obj .bet-item-obj-cr {
+            background: url("./Public/image/user_check.png") center left no-repeat;
+        }
+
+        .column-item {
+            margin-bottom: 15px;
+        }
+
+        /*下注数量*/
+        .bet-submit {
+            width: 427px;
+            margin: 50px auto;
+            color: #FFFFFF;
+            font-size: 18px;
+        }
+
+        #bet_select {
+            width: 102px;
+            height: 32px;
+            color: black;
+            padding-left: 10px;
+            border: none;
+            background: url("./Public/image/select.png");
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
+
+        #bet_select option {
+            text-align: center;
+        }
+
+        .bet-count {
+            height: 32px;
+        }
+
+        .bet-count .bet-count-left {
+            float: left;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .bet-count-right {
+            float: left;
+            margin-left: 15px;
+            line-height: 32px;
+        }
+
+        .sub-btn {
+            width: 427px;
+            height: 52px;
+            color: #333333;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 52px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            background-color: #F3D802;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -ms-user-select: none;
+             user-select: none;
+        }
+
+        .sub-disable {
+            background-color: #ccc;
+            cursor: default;
+        }
+
+        .tips {
+            width: 820px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: solid 1px #F3D802;
+            position: relative;
+        }
+
+        .tips h3 {
+            margin-top: 0px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tips p {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .tips .left-img {
+            position: absolute;
+            left: -350px;
+            top: -94px;
+        }
+
+        .tips .right-img {
+            position: absolute;
+            right: -285px;
+            top: -85px;
+        }
+
+        .hr {
+            height: 15px;
+            opacity: 0;
+        }
+
+        .game-item {
+            margin-bottom: 30px;
+        }
+
+        /*主 客*/
+        .home, .away {
+            color: black;
+            font-size: 10px;
+            font-weight: 600;
+            position: absolute;
+        }
+
+        .home {
+            left: 2px;
+            top: 2px;
+        }
+
+        .away {
+            right: 2px;
+            bottom: 2px;
+        }
+    </style>
+    <script type="text/html" id="dataTpl">
+        <div class="row">
+            <div class="game-item col-xs-12">
+                <h4 class="star-time"><%= formatDate(gameStartTime) %></h4>
+                <div class="country-item-box">
+                    <i class="trn home">Home</i>
+                    <div class="country-item-left">
+                        <img src="<%= homecourtPath %>" alt="" class="country-logo">
+                        <span><%= homecourtName %></span>
+                    </div>
+                    <div class="country-vs"></div>
+                    <div class="country-item-right">
+                        <span><%= awaycourtName %></span>
+                        <img src="<%= awaycourtPath %>" alt="" class="country-logo">
+                    </div>
+                    <i class="trn away">Away</i>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!--投注-->
+        <% for(var i = 0 ; i < macthInfoPalyTypeDTOList.length ; i++){%>
+
+        <% if(macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList.length > 0){%>
+        <div class="row bet-item">
+            <h5 class="bet-title bet-item-type" data-num="<%= macthInfoPalyTypeDTOList[i].id %>"><%=
+                macthInfoPalyTypeDTOList[i].name %></h5>
+            <% for(var j = 0 ; j < macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList.length ; j++){%>
+            <div class="column-item col-xs-2">
+                <div class="bet-item-obj">
+                    <div class="up bet-item-obj-name"
+                         data-num="<%= macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].id %>">
+                        <%= macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].name %>
+                    </div>
+                    <div class="down">
+                        <p class="bet-item-obj-odds"><%=
+                            macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].odds.toFixed(2) %></p>
+                        <span class="bet-item-obj-cr"><%= macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].cathecticRatio.toFixed(2) %> %</span>
+                    </div>
+                </div>
+            </div>
+
+            <% if(macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].name == '主队胜其他' ||
+            macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].name == '平局其他' ||
+            macthInfoPalyTypeDTOList[i].macthInfoOddsDTOList[j].name == '客队胜其他'){ %>
+            <div class="clearfix"></div>
+            <div class="hr"></div>
+            <%}%>
+
+            <%}%>
+        </div>
+        <%}%>
+
+        <%}%>
+
+    </script>
+    <script type="text/html" id="optionTpl">
+        <% for(var i = 0 ; i < 100 ; i++){%>
+        <option value="<%= i+1 %>"><%= i+1 %></option>
+        <%}%>
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row col-xs-12 top-img">
+        <div class="top-left-img"></div>
+        <img class="top-middle-img" src="Public/image/title.png">
+    </div>
+    <div class="index-box">
+        <!--当前赛事-->
+    </div>
+    <div class="clearfix"></div>
+    <!--下注数量-->
+    <div class="row bet-submit">
+        <div class="bet-count">
+            <div class="bet-count-left">
+                <i class="trn">Amount to bet</i>&nbsp;<select id="bet_select"></select>
+            </div>
+            <div class="bet-count-right">
+                <i class="trn">In theory you can win</i>&nbsp;<span id="bet-bonus">0</span>
+            </div>
+        </div>
+        <div class="sub-btn sub-disable trn">Betting now</div>
+    </div>
+    <div class="tips">
+        <h3 class="trn">Tips</h3>
+        <p class="trn">All match outcomes</p>
+        <p class="trn">You can bet between</p>
+        <img src="./Public/image/shoumenyuan.png" class="left-img">
+        <img src="./Public/image/tiqiu.png" class="right-img">
+    </div>
+    <!--语言-->
+    <div class="clearfix"></div>
+    <div class="lang">
+        <span class="switchZh">中文</span> | <span class="switchEn">English</span>
+    </div>
+</div>
+
+<script src="./asset/jquery/jquery.min.js"></script>
+<script src="./asset/jquery/jquery.cookie.js"></script>
+<script src="./asset/jquery/jquery.translate.js"></script>
+<script src="./asset/bootstrap/bootstrap.min.js"></script>
+<script src="asset/artTemplate/template-native-debug.js"></script>
+<script src="./Public/js/config.js"></script>
+<script src="./Public/js/common.js?v=1.0.0"></script>
+<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script type="text/javascript">
+    $(function () {
+        //判断平台
+        if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            window.location.href = './m.index.html';
+        }
+
+        //下注数量
+        var options = template('optionTpl', {});
+        $('#bet_select').html(options);
+
+        //时间戳格式化
+        template.helper('formatDate', function (num) {
+            return timestampToTime(num);
+        });
+
+        var id = getQueryString('id');
+
+        function getMatchInfo() {
+            $.ajax({
+                type: "get",
+                url: requestUrl + '/v1/fifa/get-matchinfo',
+                async: false,
+                crossDomain: true,
+                xhrFields: {withCredentials: true},
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if (data.code == '0') {
+                        var html = template('dataTpl', data.data);
+                        $('.index-box').html(html);
+                    }
+                },
+                error: function (err) {
+                    console.log('***************', err);
+
+                }
+            });
+        }
+
+        getMatchInfo()
+
+        //选择玩法 bet-item-obj bet-item-obj-name
+        $('.index-box').on('click', '.bet-item-obj', function (e) {
+            $('.column-item').removeClass('column-item-check');
+            $(e.target).closest('.column-item ').addClass('column-item-check');
+            var amount = $('#bet_select').val();
+            var odd = $('.column-item-check').find('.bet-item-obj-odds').text();
+            $('#bet-bonus').text((amount * odd).toFixed(2));
+            $('.sub-btn').removeClass('sub-disable')
+
+        });
+
+        //选择投注数量
+        $('#bet_select').on('change', function (e) {
+            var amount = $('#bet_select').val();
+            var oddsId = $('.column-item-check').find('.bet-item-obj-odds').text();
+            if (amount && oddsId) {
+                $('#bet-bonus').text((amount * oddsId).toFixed(2))
+            }
+        });
+
+        //下注
+        $('.sub-btn').on('click', function (e) {
+            if ($(e.target).hasClass('sub-disable')) return false;
+            var amount = $('#bet_select').val();
+            var playtypeId = $('.column-item-check').parent().find('.bet-item-type').data('num');
+            var oddsId = $('.column-item-check').find('.bet-item-obj-name').data('num');
+
+            window.location.href = './address.html?matchId=' + id + '&playtypeId=' + playtypeId + '&oddsId=' + oddsId + '&amount=' + amount;
+
+        })
+
+        //选择语言
+        var translator;       //设置默认语言
+
+        if ($.cookie('locale') == 'en_US') {
+            translator = $('html').translate({lang: "en", t: dict});
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+        } else {
+            translator = $('html').translate({lang: "zh", t: dict});
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+        }
+
+        //切换语言
+        $('.switchZh').on('click', function (e) {
+
+            $.cookie('locale', 'zh_CN', {path: '/', expire: 30});
+            switchLanguage('zh_CN');
+            getMatchInfo()
+            translator.lang("zh");
+
+            $('.top-middle-img').attr('src', 'Public/image/title.png');
+
+        })
+        $('.switchEn').on('click', function (e) {
+
+            $.cookie('locale', 'en_US', {path: '/', expire: 30});
+            switchLanguage('en_US');
+            getMatchInfo()
+            translator.lang("en");
+
+            $('.top-middle-img').attr('src', 'Public/image/title_en.png');
+
+        })
+
+    })
+</script>
+</body>
+</html>
