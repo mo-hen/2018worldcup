@@ -340,7 +340,9 @@
                 <%= data[i].homecourtName%> vs <%= data[i].awaycourtName%>
 
                 <% if(data[i].result != null){%>
-                (<%= data[i].result%>)
+                (
+                <%= data[i].result%>
+                )
                 <%}%>
 
                 <%}%>
@@ -370,7 +372,7 @@
 
                 <%}else if(data[i].winningStatus == 1){%>
 
-                <span class="winning"><%= (data[i].amount * data[i].odds)%></span>
+                <span class="winning"><%= (data[i].amount * data[i].odds).toFixed(2)%></span>
 
                 <%}else if(data[i].winningStatus == 2){%>
                 <i class="trn">You lost</i>
@@ -490,7 +492,7 @@
 <script src="./asset/scanner/analyticCode.js"></script>
 <script src="./Public/js/config.js"></script>
 <script src="./Public/js/common.js?v=1.0.0"></script>
-<script src="./Public/js/lang.js?v=1.0.0"></script>
+<script src="./Public/js/lang.js?v=1.0.1"></script>
 <script type="text/javascript">
     $(function () {
         //判断平台

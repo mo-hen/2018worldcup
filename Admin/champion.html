@@ -113,28 +113,29 @@
                     <% for(var i=0 ; i < macthInfoOddsDTOList.length ; i++){%>
 
                     <div class="item">
-                        <span class="label label-primary name"><%= macthInfoOddsDTOList[i].name %></span>
+
+                        <span class="label label-primary name" <% if(macthInfoOddsDTOList[i].status == 1){%>style="background:#ccc"<%}%> ><%= macthInfoOddsDTOList[i].name %></span>
 
                         <div class="item-value">
-
-                            <input type="text" class="form-control item-input"
-                                   value="<%= macthInfoOddsDTOList[i].odds %>">
-
+                            <% if(macthInfoOddsDTOList[i].status == 0){%>
+                            <input type="text" class="form-control item-input" value="<%= macthInfoOddsDTOList[i].odds %>">
                             <span class="old-item-edit hid" data-num="<%= macthInfoOddsDTOList[i].id %>">确定</span>
-
                             <span class="old-item-del hid">取消</span>
-
+                            <%}else{%>
+                            <input type="text" class="form-control" value="<%= macthInfoOddsDTOList[i].odds %>" readonly>
+                            <%}%>
                         </div>
 
                         <div class="item-control">
                             <% if(macthInfoOddsDTOList[i].status == 0){%>
                             <span class="label label-default weed-out"
                                   data-num="<%= macthInfoOddsDTOList[i].id %>">设为淘汰</span>
+                            <span class="label label-success add-champion" data-num="<%= macthInfoOddsDTOList[i].id %>">设置冠军</span>
                             <%}else{%>
                             <span class="label label-danger cancel-out" data-num="<%= macthInfoOddsDTOList[i].id %>">取消淘汰</span>
                             <%}%>
 
-                            <span class="label label-success add-champion" data-num="<%= macthInfoOddsDTOList[i].id %>">设置冠军</span>
+
                         </div>
 
                     </div>

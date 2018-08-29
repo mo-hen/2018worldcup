@@ -283,6 +283,10 @@ var dict = {
     "Deadline":{
         zh: "截止日期",
         en: "Deadline"
+    },
+    "France":{
+        zh: "法国",
+        en: "France"
     }
 
 }
